@@ -4,49 +4,44 @@
 \alias{ssections}
 \title{Serial Sections}
 \usage{
-ssections(data, timecol, firstsubj, lastsubj, period, na.action, interval,
-  increment)
+ssections(data, time, period, interval, increment, na.action = na.omit,
+  alpha = 0.05)
 }
 \arguments{
-\item{data}{data frame containing all the subjects and time data.}
+\item{data}{A data frame containing responses of subjects collected over time, with subjects in the rows and timepoints in the columns.}
 
-\item{timecol}{Column number of the column containing the time data in the data frame.}
-
-\item{firstsubj}{Column number of the first subject in the data frame.}
-
-\item{lastsubj}{Column number of the last subject in the data frame. Same as \code{firstsubj} if performing single cosinor analysis.}
+\item{time}{A vector containing the times at which the data was collected.}
 
 \item{period}{Duration of one cycle of rhythm.}
-
-\item{na.action}{Action to be performed on missing values.}
 
 \item{interval}{Length of an interval (number of timepoints) on which cosinor analyses will be ran.}
 
 \item{increment}{A number indicating for how much timepoints should the interval be displaced throughout the data. Note that the value of the increment cannot be higher than the value of the interval.}
+
+\item{na.action}{Action to be performed on missing values. Defaults to \code{na.omit}.}
+
+\item{alpha}{Significance level for calculating population cosinor parameters confidence intervals. Defaults to .05 (confidence intervals are 5\% risk intervals).}
 }
 \value{
-A list containing following objects:
+Object of the \code{Serial sections} class containing the following objects:
  \item{\code{coefficients}}{Cosinor coefficients in each of the intervals.}
- \item{\code{lm.coeffs}}{Linear regression coefficients for MESOR, amplitude and acrophase.}
- \item{\code{lm.fitted}}{Values of MESOR, amplitude and acrophase estimated by linear regression.}
- \item{\code{fitted.values}}{Estimated values of the non-stationary cosinor model.}
  \item{\code{emp.mean}}{Empirical mean of the data across all timepoints.}
  \item{\code{p-values}}{\emph{p}-values from the rhythm detection test in each interval.}
  \item{\code{cosinors}}{A list containing all cosinor objects calculated in each interval.}
- \item{\code{plots}}{A list containing following plots: \itemize{\item{\code{Chronogram}}{ A graphical representation of the observed and fitted values. Percent Rhythm is shown in the caption.} \item{\code{MESOR}}{ A graphical representation of the trend of the MESOR across intervals.} \item{\code{Amplitude}}{ A graphical representation of the trend of the amplitude across intervals.} \item{\code{Acrophase}}{ A graphical representation of the trend of the acrophase across intervals.} \item{\code{p-values}}{ A graphical representation of the trend of the \emph{p}-values across intervals. The usual .05 cutoff is shown.}}}
+ \item{\code{plots}}{Stacked plots showing the empirical data, cosinor parameters and their confidence intervals, p-values of the rhythm detection test and number of measurements across time.}
 }
 \description{
 Performs serial section analysis of rhythmic data and fits non-stationary cosinor models.
 }
 \details{
-Cornélissen (2014) describes procedures for rhythmometric analysis of non-stationary data. First, an interval of an user-specified length (\eqn{I}) is chosen and usual cosinor analysis (i.e. single cosinor or population-mean cosinor) is performed on the interval. The interval is then displaced throughout the data by an user-specified increment (\eqn{\Delta t}) and cosinor analysis is then performed on the new interval. Intervals can be overlapping (\eqn{\Delta t}<I) or non-overlapping (\eqn{\Delta t}=I). A rhythm detection test is also calculated in each interval. After values of cosinor parameters have been obtained for each interval, they can be plotted, along with the \emph{p}-values from the rhythm detection test. Trends of growth of the MESOR, amplitude and the acrophase can be estimated using linear regression. Estimated trends of the model can then be imputed into the cosinor equation to fit the non-stationary model to data.
+Cornélissen (2014) describes procedures for rhythmometric analysis of non-stationary data. First, an interval of an user-specified length (\eqn{I}) is chosen and usual cosinor analysis (i.e. single cosinor or population-mean cosinor) is performed on the interval. The interval is then displaced throughout the data by an user-specified increment (\eqn{\Delta t}) and cosinor analysis is then performed on the new interval. Intervals can be overlapping (\eqn{\Delta t}<I) or non-overlapping (\eqn{\Delta t}=I). A rhythm detection test is also calculated in each interval. After values of cosinor parameters have been obtained for each interval, they and their confidence intervals can be plotted, along with the \emph{p}-values from the rhythm detection test.
 }
 \note{
-The value of increment cannot be higher than the value of the interval. While it's possible to estimate the trends of cosinor parameters using nonlinear regression, this function only includes estimates obtained using linear regression.
+The value of increment cannot be higher than the value of the interval.
 }
 \examples{
-ssections(timecol = 1, firstsubj = 2, lastsubj = 20, data = PANAS_november, period = 7,
-interval = 14, increment = 1, na.action = "na.exclude")
+ssections(data = PANAS_november, time = PANAS_time, period = 7,
+interval = 7, increment = 1)
 }
 \references{
 Cornélissen, G. (2014). Cosinor-Based Rhythmometry. \emph{Theoretical Biology and Medical Modeling}, \emph{11}, Article 16.

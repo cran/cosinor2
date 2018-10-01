@@ -3,11 +3,10 @@
 \docType{data}
 \name{PA_introverts}
 \alias{PA_introverts}
-\title{Self-reported mood of introverts}
-\format{A data frame with 6 rows and 30 variables:
+\title{Self-reported positive affect of introverts}
+\format{A data frame with 29 rows and 6 variables:
 \describe{
-  \item{Time}{Time of measurement in hours.}
-  \item{Subject 1, Subject 2, Subject 3, Subject 4, Subject 5, Subject 6, Subject 7, Subject 8, Subject 9, Subject 10, Subject 11, Subject 12, Subject 13, Subject 14, Subject 15, Subject 16, Subject 17, Subject 18, Subject 19, Subject 20, Subject 21, Subject 22, Subject 23, Subject 24, Subject 25, Subject 26, Subject 27, Subject 28, Subject 29}{Results of 29 subjects on the PA scale of the PANAS questionnaire.}
+  \item{X1, X2, X3, X4, X5, X6}{Responses of subjects at 6 measurement points (hours).}
   }}
 \source{
 Mutak, A., Pavlović, M. & Zibar, K. (2017, May). \emph{Postoje li razlike između introverata i ekstraverata u cirkadijurnim ritmovima raspoloženja?} [\emph{Are There Differences Between Introverts and Extraverts in Circadian Mood Rhythms?}]. Study presented at the 3rd \emph{Regionalni susret studenata psihologije - SPIRI} [\emph{Regional Meeting of Psychology Students - SPIRI}] conference, Rijeka, Croatia.

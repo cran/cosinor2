@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Augustin Mutak" />
+
+<meta name="date" content="2018-10-01" />
+
+<title>cosinor2 vignette</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">cosinor2 vignette</h1>
+<h4 class="author"><em>Augustin Mutak</em></h4>
+<h4 class="date"><em>2018-10-01</em></h4>
+
+
+
+<p>This vignette is intended to be a short guide to using the <code>cosinor2</code> package. The vignette will briefly walk the interested user through the functions implemented in the package. The <code>cosinor2</code> package is envisioned as an extension to the previous <code>cosinor</code> package developed by Michael Sachs, but with additional functionalities.</p>
+<p>Cosinor is used to fit sine regression models to data. This vignette presumes that the user has theoretical knowledge of cosinor models. To learn more, users are directed to read the article by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3991883/">Cornélissen (2014)</a>.</p>
+<pre><code>#&gt; Loading required package: cosinor</code></pre>
+<div id="population-mean-cosinor" class="section level1">
+<h1>Population-mean cosinor</h1>
+<p>The first function in this vignette will be the <code>population.cosinor.lm</code> function which implements the population-mean cosinor in R. Population-mean cosinor is a statistical procedure that implements sine regression (cosinor) to a greater number of individuals, as opposed to the “standard”, single cosinor, that implements it only on one individual/series. Population-mean cosinor procedure consists of fitting single cosinor models to data of each individual separately and averagning cosinor parameters afterwards. However, statistical tests and confidence interval calculation are different than in the case of single cosinor.</p>
+<p>The required arguments of the <code>population.cosinor.lm</code> function are:</p>
+<ul>
+<li><code>data</code> - A data frame that contains subjects’ responses over time. Each row should represent a subject and each column should represent a timepoint at which the data has been collected.</li>
+<li><code>time</code> - A numeric vector that contains the times at which the data was collected.</li>
+<li><code>period</code> - A period that will be used in fitting the model (duration of one cycle of rhythm). Cosinor models do not estimate the best-fitting periods like all other cosinor parameters. Instead, the user is expected to provide it.</li>
+</ul>
+<p>The optional arguments are:</p>
+<ul>
+<li><code>na.action</code> - What to do with the missing data. Default is <code>na.omit</code>.</li>
+<li><code>alpha</code> - Significance level for calculating confidence intervals of cosinor parameters. Defaults to .05.</li>
+<li><code>plot</code> - Whether or not you want to display the plot after the analysis. Defaults to <code>TRUE</code>.</li>
+</ul>
+<p>The function can be used as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.cosinor &lt;-<span class="st"> </span><span class="kw">population.cosinor.lm</span>(<span class="dt">data =</span> PANAS_november, <span class="dt">time =</span> PANAS_time, <span class="dt">period =</span> <span class="dv">7</span>)
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.435419 0.2662682 -5.544496</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The output shows the cosinor parameters and the graph. The coefficients can be accessed by <code>fit.panas.cosinor$coefficients</code>. If the user requires, they can also access more information on the fitted model. For example, the confidence intervals of the parameters would be retrieved by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.cosinor<span class="op">$</span>conf.ints
+<span class="co">#&gt;                 MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; Upper limit 1.9554141 0.45592967 -4.445865</span>
+<span class="co">#&gt; Lower limit 0.9154241 0.07660673 -6.305227</span></code></pre></div>
+<p>It must be noted that the confidence interval of the acrophase cannot be calculated if the confidence interval of the amplitude includes 0. The user may also access the observed mean of the data, fitted values or residuals by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.cosinor<span class="op">$</span>emp.mean
+<span class="co">#&gt;       X01       X02       X03       X04       X05       X06       X07 </span>
+<span class="co">#&gt; 1.2656250 1.6388889 1.8541667 1.2222222 1.0294118 1.9916667 2.0789474 </span>
+<span class="co">#&gt;       X08       X09       X10       X11       X12       X13       X14 </span>
+<span class="co">#&gt; 1.6458333 1.1458333 1.1180556 1.7890625 1.5921053 1.9407895 1.7105263 </span>
+<span class="co">#&gt;       X15       X16       X17       X18       X19       X20       X21 </span>
+<span class="co">#&gt; 1.8888889 1.4705882 1.3472222 1.2205882 1.4722222 1.6388889 1.7434211 </span>
+<span class="co">#&gt;       X22       X23       X24       X25       X26       X27       X28 </span>
+<span class="co">#&gt; 1.0486111 0.4583333 0.8618421 1.6250000 1.3815789 1.2894737 1.3333333 </span>
+<span class="co">#&gt;       X29       X30 </span>
+<span class="co">#&gt; 1.1710526 0.8088235</span>
+fit.panas.cosinor<span class="op">$</span>fitted.values
+<span class="co">#&gt;  [1] 1.417993 1.216824 1.180261 1.335837 1.566401 1.698332 1.632285</span>
+<span class="co">#&gt;  [8] 1.417993 1.216824 1.180261 1.335837 1.566401 1.698332 1.632285</span>
+<span class="co">#&gt; [15] 1.417993 1.216824 1.180261 1.335837 1.566401 1.698332 1.632285</span>
+<span class="co">#&gt; [22] 1.417993 1.216824 1.180261 1.335837 1.566401 1.698332 1.632285</span>
+<span class="co">#&gt; [29] 1.417993 1.216824</span>
+fit.panas.cosinor<span class="op">$</span>residuals
+<span class="co">#&gt;         X01         X02         X03         X04         X05         X06 </span>
+<span class="co">#&gt; -0.15236838  0.42206511  0.67390576 -0.11361515 -0.53698915  0.29333418 </span>
+<span class="co">#&gt;         X07         X08         X09         X10         X11         X12 </span>
+<span class="co">#&gt;  0.44666245  0.22783995 -0.07099044 -0.06220535  0.45322512  0.02570434 </span>
+<span class="co">#&gt;         X13         X14         X15         X16         X17         X18 </span>
+<span class="co">#&gt;  0.24245699  0.07824139  0.47089550  0.25376446  0.16696131 -0.11524914 </span>
+<span class="co">#&gt;         X19         X20         X21         X22         X23         X24 </span>
+<span class="co">#&gt; -0.09417870 -0.05944360  0.11113613 -0.36938227 -0.75849044 -0.31841880 </span>
+<span class="co">#&gt;         X25         X26         X27         X28         X29         X30 </span>
+<span class="co">#&gt;  0.28916262 -0.18482197 -0.40885880 -0.29895159 -0.24694075 -0.40800024</span></code></pre></div>
+<p>Furthermore, all the single cosinors will also be kept after analysis. They are kept in the <code>single.cos</code> list. The user could access the single cosinor analysis object of the sixth subject by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.cosinor<span class="op">$</span>single.cos[[<span class="dv">6</span>]]
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   1.3414448  -0.3388631  -0.5666818 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;    1.341445    0.660270    1.031865</span></code></pre></div>
+<p>Single cosinor parameters of all subjects can be accessed as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.cosinor<span class="op">$</span>pop.mat
+<span class="co">#&gt;           X1         X2         X3         X4         X5         X6</span>
+<span class="co">#&gt; 1  1.1576888 2.67929992  1.1138680 0.56495708 2.57065706  1.3414448</span>
+<span class="co">#&gt; 2 -0.4525094 0.33149725  0.6800847 1.03064083 0.02810958 -0.3388631</span>
+<span class="co">#&gt; 3 -0.6592897 0.05205926 -0.4491993 0.04172762 0.35670584 -0.5666818</span>
+<span class="co">#&gt;            X7          X8          X9       X10         X11        X12</span>
+<span class="co">#&gt; 1  2.56450532  1.18247236  0.58683524 2.4710208  3.08664809  1.5847422</span>
+<span class="co">#&gt; 2 -0.39824438  0.19058804  0.96460443 0.6684201 -0.48717024  0.5829757</span>
+<span class="co">#&gt; 3 -0.02026741 -0.02879778 -0.06650511 0.4134668 -0.08928715 -0.7425029</span>
+<span class="co">#&gt;          X13         X14        X15        X16        X17        X18</span>
+<span class="co">#&gt; 1 1.20670560 2.212731526 -1.4203358  0.2065499  2.1034854  0.7212902</span>
+<span class="co">#&gt; 2 0.19738833 0.007663496  0.9512714  0.3127176  0.2890218 -0.8202136</span>
+<span class="co">#&gt; 3 0.04211185 0.181761539  0.2558844 -0.8089338 -0.1966401 -0.6792010</span>
+<span class="co">#&gt;            X19</span>
+<span class="co">#&gt; 1  1.338396749</span>
+<span class="co">#&gt; 2  0.002467911</span>
+<span class="co">#&gt; 3 -0.442799405</span></code></pre></div>
+</div>
+<div id="acrophase-correction" class="section level1">
+<h1>Acrophase correction</h1>
+<p>If a single cosinor model was fitted previously, it is desirable to use the <code>correct.acrophase</code> function. This need arises because arcus tangent is used to calculate the acrophase (see the aforementioned article by Cornélissen for details and formulae). However, there can be more angles with the same value of arcus tangent and not all of them are correct. This function can, therefore, be used to place the acrophase in the correct quadrant. For example, if a single cosinor model is fit to the air temperature data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.temp.cosinor &lt;-<span class="st"> </span><span class="kw">cosinor.lm</span>(Temperature <span class="op">~</span><span class="st"> </span><span class="kw">time</span>(Time), <span class="dt">period =</span> <span class="dv">24</span>, <span class="dt">data =</span> temperature_zg)</code></pre></div>
+<p>… the value of the acrophase can be retrieved:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.temp.cosinor<span class="op">$</span>coefficients
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   23.083333    6.821466    0.985428</span></code></pre></div>
+<p>… however, it might not be the appropriate value of the acrophase. Therefore, the <code>correct.acrophase</code> function can be used to put the value in the appropriate quadrant:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">correct.acrophase</span>(fit.temp.cosinor)
+<span class="co">#&gt; [1] -4.127021</span></code></pre></div>
+<p>The output now shows the correct value of the acrophase.</p>
+</div>
+<div id="rhythm-detection-test" class="section level1">
+<h1>Rhythm detection test</h1>
+<p>After fitting the model, the fit of the model should be assessed. This can be done by using the rhythm detection test:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cosinor.detect</span>(fit.panas.cosinor)
+<span class="co">#&gt;             F df1 df2          p</span>
+<span class="co">#&gt; [1,] 4.732237   2  17 0.02323689</span></code></pre></div>
+<p>The output shows the <em>F</em> ratio, degrees of freedom and the <em>p</em>-value. If we accept the 5% significance criterion, the tested model would fit to the data.</p>
+<p>Rhythm detection test can also be used on single cosinor models, thus extending the <code>cosinor</code> package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cosinor.detect</span>(fit.temp.cosinor)
+<span class="co">#&gt;             F df1 df2            p</span>
+<span class="co">#&gt; [1,] 681.1604   2  45 2.282638e-34</span></code></pre></div>
+<p>This model also fits the data good.</p>
+</div>
+<div id="percent-rhythm" class="section level1">
+<h1>Percent Rhythm</h1>
+<p>After the fit of the model is assessed, it can be useful to chech the relative power of the rhythm by checking the proportion of the variance explained by the rhythm (Percent Rhythm). This can be done using the <code>cosinor.PR</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cosinor.PR</span>(fit.panas.cosinor)
+<span class="co">#&gt;           r Percent rhythm     p-value</span>
+<span class="co">#&gt; 1 0.4637158      0.2150324 0.009851019</span></code></pre></div>
+<p>The output shows the correlation between observed and estimated data, coefficient of determination (squared correlation) and the <em>p</em>-value showing if the correlation is significant or not. As previously, the function can also be run on the single cosinor models:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cosinor.PR</span>(fit.temp.cosinor)
+<span class="co">#&gt;           r Percent rhythm p-value</span>
+<span class="co">#&gt; 1 0.9838823      0.9680243       0</span></code></pre></div>
+</div>
+<div id="periodogram" class="section level1">
+<h1>Periodogram</h1>
+<p>However, in some cosinor analyses, the users might not have a prior idea on the best-fitting period. In this case, the periodogram can be used to find candidates for the best fitting period. To construct a periodogram, a series of cosinor analyses are conducted, each using a different period. The best-fitting period can be thought of as a period that will maximalize the proportion of explained variance. The periodogram is, then, just a plot showing the proportion of explained variance by each period. This approach has been implemented in the <code>cosinor2</code> package.</p>
+<p>The required arguments to this function are:</p>
+<ul>
+<li><code>data</code> - A data frame that contains subjects’ responses over time. Each row should represent a subject and each column should represent a timepoint at which the data has been collected.</li>
+<li><code>time</code> - A numeric vector that contains the times at which the data was collected.</li>
+</ul>
+<p>The optional arguments are:</p>
+<ul>
+<li><code>periods</code> - A vector of periods that the user wants to include in construction of the periodogram. Defaults to the same vector as provided in the <code>time</code> argument.</li>
+<li><code>na.action</code> - What to do with the missing data. Default is <code>na.omit</code>.</li>
+<li><code>alpha</code> - Significance level for determining if the model with a given period fits well to the data. Defaults to .05.</li>
+</ul>
+<p>The function is used as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">periodogram</span>(<span class="dt">data =</span> PANAS_november, <span class="dt">time =</span> PANAS_time)
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.425857 0.0974052  -1.72258</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.433233 0.06075725 -4.960697</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.433198   0.19714 -1.850201</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.427776  0.304104 -1.912313</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.435419 0.2662682 -5.544496</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;     MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.43029 0.06176998 -2.718438</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.434468 0.04256186 -5.541007</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.424263 0.08404731 -3.533264</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.411967 0.09632206 -2.337104</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.412025 0.08017202 -1.386624</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.417406 0.06764207 -0.9277698</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.423402 0.07285646 -0.797064</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.429137 0.09019328 -0.4762216</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude   Acrophase</span>
+<span class="co">#&gt; 1 1.435329 0.1086437 -0.02046403</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.442338 0.1267374 -5.837713</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;     MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.44912 0.1419786 -5.401883</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.454175 0.1526687  -4.99271</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.456779 0.1603039 -4.599086</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.457111 0.1680407 -4.219345</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.455731 0.1781909 -3.862963</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.453189 0.1910275 -3.542146</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.449895 0.2052233 -3.263165</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.446123 0.2190292 -3.024845</span>
+<span class="co">#&gt;     MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.44204 0.2311564 -2.821844</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.437745 0.2410379 -2.647864</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.433291 0.2486865 -2.497237</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.428704 0.2544403 -2.365372</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.423996 0.2587514 -2.248695</span>
+<span class="co">#&gt; [1] &quot;The best fitting period is 6.&quot;</span>
+<span class="co">#&gt; Warning: Removed 25 rows containing missing values (geom_point).</span>
+<span class="co">#&gt; Warning: Removed 7 rows containing missing values (geom_point).</span>
+<span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_path).</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The output will inform the user of the best-fitting period. The same information can be seen from the plot. Furthermore, periods with rhythms that fit the data well are represented by dots and periods with rhythms that do not fit the data well are represented by crosses.</p>
+<p>In some situations, it can happen that the measurement times are not the times we want test for model fit. For example, the positive affect dataset included in this package contains data that was collected at 10 AM, 12 PM, 2 PM, 4 PM, 6 PM and 8 PM, but the periods that are actually interesting for testing are 1 - 24, since the rhythm is presumed to be circadian. <code>periods</code> argument can be used in such a situation as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">periodogram</span>(<span class="dt">data =</span> PA_extraverts, <span class="dt">time =</span> PA_time, <span class="dt">periods =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">24</span>)
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.236353 0.04309677 -6.159497</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR    Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.256506 3.291388e+14 -1.570796</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.249319 0.08321373 -2.778928</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 3.236353 0.04309677 -0.1236888</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data, time = time, na.action</span>
+<span class="co">#&gt; = na.action, : Warning: Amplitude confidence interval contains zero.</span>
+<span class="co">#&gt; Acrophase confidence interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 3.241355 0.0303915 -0.7404752</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.255275 0.08066747 -5.595513</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.257527 0.09835083 -4.476869</span>
+<span class="co">#&gt;   MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.253 0.1097552 -3.568892</span>
+<span class="co">#&gt;    MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.2455 0.1184721 -2.760428</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.236353 0.1256988 -2.040386</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.226025 0.1331694 -1.409438</span>
+<span class="co">#&gt;    MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.2147 0.1417204  -0.85982</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 3.202454 0.1515695 -0.3802253</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.189323 0.1627052 -6.242763</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.175325  0.175057 -5.871488</span>
+<span class="co">#&gt;     MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.16047 0.1885516 -5.541676</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.144761 0.2031274 -5.246888</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.128203 0.2187356 -4.981888</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.110795 0.2353388 -4.742409</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.092539 0.2529081 -4.524945</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.073435 0.2714213 -4.326598</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.053484  0.290861 -4.144953</span>
+<span class="co">#&gt; [1] &quot;The best fitting period is 24.&quot;</span>
+<span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_point).</span>
+<span class="co">#&gt; Warning: Removed 16 rows containing missing values (geom_point).</span>
+<span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_path).</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Users should note that the first two periods are never tested in the periodogram analysis. This is because the estimated curve doesn’t take on the sinusoidal shape if the number of timepoints is lesser than 3. However, users should not “cut-off” timepoints from the <code>periods</code> argument, as the first two periods will automatically get “cut-off” by the code. In other words, the correct call to argument in the previous example is indeed <code>1:24</code> and not <code>3:24</code>.</p>
+<p>Users should also note that, if the midnight is included in their time and/or periods vector, it should be coded as <code>24</code> and not as <code>0</code>.</p>
+<p>Like previous functions, it can also be used on the data intended for single cosinor analysis.</p>
+</div>
+<div id="comparison-of-cosinor-parameters-of-two-populations" class="section level1">
+<h1>Comparison of cosinor parameters of two populations</h1>
+<p>Certain users may also wish to compare if the population cosinor parameters of two populations are equal. In order to assess this, models firstly need to be fit to the data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.pa_ext.cosinor &lt;-<span class="st"> </span><span class="kw">population.cosinor.lm</span>(<span class="dt">data =</span> PA_extraverts, <span class="dt">time =</span> PA_time, <span class="dt">period =</span> <span class="dv">24</span>)
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 3.053484  0.290861 -4.144953</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.pa_int.cosinor &lt;-<span class="st"> </span><span class="kw">population.cosinor.lm</span>(<span class="dt">data =</span> PA_introverts, <span class="dt">time =</span> PA_time, <span class="dt">period =</span> <span class="dv">24</span>)
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 2.917414 0.2190473 -5.058308</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Equality of parameters can be compared as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cosinor.poptests</span>(fit.pa_ext.cosinor, fit.pa_int.cosinor)
+<span class="co">#&gt;                    F df1 df2         p 1st population 2nd population</span>
+<span class="co">#&gt; MESOR     0.32644795   1  51 0.5702677       3.053484      2.9174142</span>
+<span class="co">#&gt; Amplitude 0.01669058   1  51 0.8977139       0.290861      0.2190473</span>
+<span class="co">#&gt; Acrophase 2.25074729   1  51 0.1397157      -4.144953     -5.0583083</span></code></pre></div>
+<p>The output shows the <em>F</em> ratio, degrees of freedom and the <em>p</em>-value for MESOR, amplitude and acrophase. For convenience, it also shows the values of the parameters in the two populations.</p>
+<p>Users should note that the acrophases of the two populations cannot be compared if their amplitudes are significantly different.</p>
+</div>
+<div id="serial-sections" class="section level1">
+<h1>Serial sections</h1>
+<p>Lastly, serial sections are a method applied to analyze non-stationary data. Stationary cosinor models presume that the values of cosinor parameters do not change over time. However, in some cases it is evident that those changes are happening. A good example of this is global warming, where the MESOR of the temperature is increasing over time.</p>
+<p>To analyze such changes, a cosinor model can be fitted just on a section of the data and calculate cosinor parameters in that section. After that, cosinor model can be fitted on another section of the data. If this process is repeated multiple times, changes in cosinor parameters can be recorded as they change over sections. For easy interpretation, they can be plotted.</p>
+<p>There are two key elements to defining serial section analysis. The first one is the <em>interval</em>. The interval is the length of the section of data that will be analyzed while successively fitting the cosinor model to data. The second one is the <em>increment</em>. The increment regulates the number of timepoints by which the interval will be displaced during the analysis.</p>
+<p>For example, if the interval is 5 and increment is 1, the cosinor model would first be fit to the data collected at 1st through 5th measurement times. After that, it would be fit to the data collected at 2nd through 6th measurement times etc. Note that in this case, the sections are overlapping - both the first and the second interval contain data collected at 2nd through 5th measurement points.</p>
+<p>However, the sections can also be non-overlapping. This is the case when the interval and increment are equal. For example, if both the interval and the increment are 5, the first cosinor model will be fit to the data collected at 1st through 5th measurement points. But, the next interval will be fitted to the 6th through 10th measurement points. In this case, the sections do not overlap. Obviously, the increment cannot be higher than the interval as this results in data loss.</p>
+<p>The required arguments to this function are:</p>
+<ul>
+<li><code>data</code> - A data frame that contains subjects’ responses over time. Each row should represent a subject and each column should represent a timepoint at which the data has been collected.</li>
+<li><code>time</code> - A numeric vector that contains the times at which the data was collected.</li>
+<li><code>period</code> - Duration of one cycle of rhythm.</li>
+<li><code>interval</code> - Length of the interval.</li>
+<li><code>increment</code> - Length of the increment.</li>
+</ul>
+<p>The optional arguments are:</p>
+<ul>
+<li><code>na.action</code> - What to do with the missing data. Default is <code>na.omit</code>.</li>
+<li><code>alpha</code> - Significance level for calculating confidence intervals. Defaults to .05.</li>
+</ul>
+<p>The function is used as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.ssections &lt;-<span class="st"> </span><span class="kw">ssections</span>(<span class="dt">data =</span> PANAS_november, <span class="dt">time =</span> PANAS_time, <span class="dt">period =</span> <span class="dv">7</span>, <span class="dt">interval =</span> <span class="dv">7</span>, <span class="dt">increment =</span> <span class="dv">1</span>)
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.620451 0.3402781 -0.4557437</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.587965 0.3982017 -0.5797145</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.507859 0.4052887 -0.1809111</span>
+<span class="co">#&gt;      MESOR Amplitude   Acrophase</span>
+<span class="co">#&gt; 1 1.448342 0.5285055 -0.03536664</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.541431  0.394836 -6.117816</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.652325 0.4309404 -5.523842</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.632457 0.3993554 -5.530562</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.611006 0.2972274 -5.270866</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.615804 0.3105482 -5.344239</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.742253 0.1175952 -5.641586</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.668699 0.2243002 -5.923385</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude   Acrophase</span>
+<span class="co">#&gt; 1 1.628744 0.3097036 -0.01173145</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude   Acrophase</span>
+<span class="co">#&gt; 1 1.633108 0.2998765 -0.01403355</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.587389 0.2654353 -0.4164323</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.582527 0.2637017 -0.3983837</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.484406 0.09529317 -5.430829</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.291141 0.4839035 -5.067825</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.224621 0.5754962 -5.222073</span>
+<span class="co">#&gt;     MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.26941 0.5675365 -5.053997</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.266885 0.5648176 -5.072753</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.211507 0.4583492 -5.029324</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.146627  0.444661  -4.77787</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.155386 0.4252496 -4.852908</span>
+<span class="co">#&gt; Warning in population.cosinor.lm(data = data[, c(k:(k + interval - 1))], :</span>
+<span class="co">#&gt; Warning: Amplitude confidence interval contains zero. Acrophase confidence</span>
+<span class="co">#&gt; interval cannot be calculated and was set to NA.</span>
+<span class="co">#&gt;      MESOR Amplitude Acrophase</span>
+<span class="co">#&gt; 1 1.194246 0.3472145 -4.817786</span>
+<span class="co">#&gt; Warning: Removed 9 rows containing missing values (geom_path).</span>
+<span class="co">#&gt; Warning: Removed 4 rows containing missing values (geom_path).</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The function will generate the plot that is used for interpretation of the serial section analysis (vignette limits the size of the plots, so it is preferrable to look at the above plot after running the function in R). The plot is actually a collection of plots stacked on top of each other. The first plot is the chronogram, showing the observed mean over time.</p>
+<p>The following three plots show how MESOR, amplitude and acrophase change over sections. Their confidence intervals are also shown. Users should note that, as mentioned previously, confidence intervals of the acrophase cannot always be calculated. Therefore, the plot of the acrophase may not show confidence intervals in all sections. Furthermore, users should remember that the acrophase is a circular variable. This means that the change from 2°to 358°is not a change of 356°, but a change of 4°.</p>
+<p>The fourth plot shows the <em>p</em>-value from the rhythm detection test in each section. Two dashed lines are also shown on the plot, representing the usual .05 and .01 significance levels. The last plot simply shows the number of measurements taken in each section.</p>
+<p>Other useful information may also be accessed after analysis. Users may access the empirical mean by calling:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.ssections<span class="op">$</span>emp.mean
+<span class="co">#&gt;      emp.mean</span>
+<span class="co">#&gt; X01 1.2656250</span>
+<span class="co">#&gt; X02 1.6388889</span>
+<span class="co">#&gt; X03 1.8541667</span>
+<span class="co">#&gt; X04 1.2222222</span>
+<span class="co">#&gt; X05 1.0294118</span>
+<span class="co">#&gt; X06 1.9916667</span>
+<span class="co">#&gt; X07 2.0789474</span>
+<span class="co">#&gt; X08 1.6458333</span>
+<span class="co">#&gt; X09 1.1458333</span>
+<span class="co">#&gt; X10 1.1180556</span>
+<span class="co">#&gt; X11 1.7890625</span>
+<span class="co">#&gt; X12 1.5921053</span>
+<span class="co">#&gt; X13 1.9407895</span>
+<span class="co">#&gt; X14 1.7105263</span>
+<span class="co">#&gt; X15 1.8888889</span>
+<span class="co">#&gt; X16 1.4705882</span>
+<span class="co">#&gt; X17 1.3472222</span>
+<span class="co">#&gt; X18 1.2205882</span>
+<span class="co">#&gt; X19 1.4722222</span>
+<span class="co">#&gt; X20 1.6388889</span>
+<span class="co">#&gt; X21 1.7434211</span>
+<span class="co">#&gt; X22 1.0486111</span>
+<span class="co">#&gt; X23 0.4583333</span>
+<span class="co">#&gt; X24 0.8618421</span>
+<span class="co">#&gt; X25 1.6250000</span>
+<span class="co">#&gt; X26 1.3815789</span>
+<span class="co">#&gt; X27 1.2894737</span>
+<span class="co">#&gt; X28 1.3333333</span>
+<span class="co">#&gt; X29 1.1710526</span>
+<span class="co">#&gt; X30 0.8088235</span></code></pre></div>
+<p>Coefficients in each section and the <em>p</em>-values of the rhythm detection test can be accessed by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.ssections<span class="op">$</span>coefficients
+<span class="co">#&gt;       MESOR  Amplitude   Acrophase</span>
+<span class="co">#&gt; 1  1.620451 0.34027807 -0.45574371</span>
+<span class="co">#&gt; 2  1.587965 0.39820167 -0.57971454</span>
+<span class="co">#&gt; 3  1.507859 0.40528865 -0.18091110</span>
+<span class="co">#&gt; 4  1.448342 0.52850546 -0.03536664</span>
+<span class="co">#&gt; 5  1.541431 0.39483605 -6.11781577</span>
+<span class="co">#&gt; 6  1.652325 0.43094036 -5.52384166</span>
+<span class="co">#&gt; 7  1.632457 0.39935541 -5.53056159</span>
+<span class="co">#&gt; 8  1.611006 0.29722738 -5.27086610</span>
+<span class="co">#&gt; 9  1.615804 0.31054815 -5.34423880</span>
+<span class="co">#&gt; 10 1.742253 0.11759518 -5.64158574</span>
+<span class="co">#&gt; 11 1.668699 0.22430019 -5.92338460</span>
+<span class="co">#&gt; 12 1.628744 0.30970362 -0.01173145</span>
+<span class="co">#&gt; 13 1.633108 0.29987649 -0.01403355</span>
+<span class="co">#&gt; 14 1.587389 0.26543534 -0.41643232</span>
+<span class="co">#&gt; 15 1.582527 0.26370170 -0.39838372</span>
+<span class="co">#&gt; 16 1.484406 0.09529317 -5.43082884</span>
+<span class="co">#&gt; 17 1.291141 0.48390351 -5.06782476</span>
+<span class="co">#&gt; 18 1.224621 0.57549624 -5.22207309</span>
+<span class="co">#&gt; 19 1.269410 0.56753655 -5.05399665</span>
+<span class="co">#&gt; 20 1.266885 0.56481764 -5.07275296</span>
+<span class="co">#&gt; 21 1.211507 0.45834920 -5.02932362</span>
+<span class="co">#&gt; 22 1.146627 0.44466101 -4.77786967</span>
+<span class="co">#&gt; 23 1.155386 0.42524955 -4.85290777</span>
+<span class="co">#&gt; 24 1.194246 0.34721447 -4.81778602</span>
+fit.panas.ssections<span class="op">$</span><span class="st">`</span><span class="dt">p-values</span><span class="st">`</span>
+<span class="co">#&gt;        pvalues</span>
+<span class="co">#&gt; 1  0.465272532</span>
+<span class="co">#&gt; 2  0.178018244</span>
+<span class="co">#&gt; 3  0.284503895</span>
+<span class="co">#&gt; 4  0.056264660</span>
+<span class="co">#&gt; 5  0.149077742</span>
+<span class="co">#&gt; 6  0.020773333</span>
+<span class="co">#&gt; 7  0.033455600</span>
+<span class="co">#&gt; 8  0.257639457</span>
+<span class="co">#&gt; 9  0.316080257</span>
+<span class="co">#&gt; 10 0.885504201</span>
+<span class="co">#&gt; 11 0.669773613</span>
+<span class="co">#&gt; 12 0.310933788</span>
+<span class="co">#&gt; 13 0.420217099</span>
+<span class="co">#&gt; 14 0.460142828</span>
+<span class="co">#&gt; 15 0.431851687</span>
+<span class="co">#&gt; 16 0.878070379</span>
+<span class="co">#&gt; 17 0.072023022</span>
+<span class="co">#&gt; 18 0.054745111</span>
+<span class="co">#&gt; 19 0.045713937</span>
+<span class="co">#&gt; 20 0.032509830</span>
+<span class="co">#&gt; 21 0.008675886</span>
+<span class="co">#&gt; 22 0.019995774</span>
+<span class="co">#&gt; 23 0.013565124</span>
+<span class="co">#&gt; 24 0.153756435</span></code></pre></div>
+<p>Also, cosinor objects of models calculated in each section are stored in the <code>cosinors</code> object. For example, the cosinor model calcualted on the third section can be accessed by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.panas.ssections<span class="op">$</span>cosinors[[<span class="dv">3</span>]]
+<span class="co">#&gt; $single.cos</span>
+<span class="co">#&gt; $single.cos[[1]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   1.8545741  -0.7490001  -0.2806725 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   1.8545741   0.7998614   0.3585335 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[2]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   2.8392857   1.2775382   0.3991111 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   2.8392857   1.3384295   0.3027996 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[3]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   0.8571429   1.8287628   0.4804843 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   0.8571429   1.8908301   0.2569304 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[4]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   0.5813546   2.1302333  -0.7896087 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   0.5813546   2.2718661  -0.3549671 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[5]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   2.5390739  -0.0284006   1.1219178 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;    2.539074    1.122277   -1.545487 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[6]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;    1.401745   -0.107051    1.143905 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;    1.401745    1.148903   -1.477484 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[7]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   3.3972509   0.2516731  -0.7694621 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   3.3972509   0.8095748  -1.2546874 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[8]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt;  (Intercept)          rrr          sss </span>
+<span class="co">#&gt;  1.125000000 -0.004492044  1.386773353 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;    1.125000    1.386781   -1.567557 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[9]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   0.6071429   1.2137260   0.1424947 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   0.6071429   1.2220620   0.1168677 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[10]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;  2.42857143 -0.04577355  0.78763242 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   2.4285714   0.7889614  -1.5127462 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[11]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;  3.30357143 -0.05819752 -0.42062486 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   3.3035714   0.4246319   1.4333095 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[12]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   1.5714286   0.9870828  -0.8019290 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   1.5714286   1.2717793  -0.6822703 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[13]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   1.4482183  -0.6536322   0.5156570 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   1.4482183   0.8325486  -0.6679422 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[14]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   1.6708234   0.0572453   0.1736328 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;    1.670823    0.182826    1.252327 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[15]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   -1.154425    1.454080    1.106835 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;  -1.1544253   1.8274109   0.6506258 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[16]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   0.5714286   0.6563762  -0.7598971 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   0.5714286   1.0041281  -0.8583622 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[17]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;    2.660714    1.273229   -1.038261 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;    2.660714    1.642893   -0.684094 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[18]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   0.7321429  -2.4721199  -0.6558406 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   0.7321429   2.5576364   0.2593212 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $single.cos[[19]]</span>
+<span class="co">#&gt; Call: </span>
+<span class="co">#&gt; .f(formula = .x[[i]], period = ..2, data = ..1, na.action = ..3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Raw Coefficients: </span>
+<span class="co">#&gt; (Intercept)         rrr         sss </span>
+<span class="co">#&gt;   0.2142857   0.5635347  -0.3566306 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Transformed Coefficients: </span>
+<span class="co">#&gt; (Intercept)         amp         acr </span>
+<span class="co">#&gt;   0.2142857   0.6669008  -0.5642214 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $pop.mat</span>
+<span class="co">#&gt;           X1        X2        X3         X4         X5        X6</span>
+<span class="co">#&gt; 1  1.8545741 2.8392857 0.8571429  0.5813546  2.5390739  1.401745</span>
+<span class="co">#&gt; 2 -0.7490001 1.2775382 1.8287628  2.1302333 -0.0284006 -0.107051</span>
+<span class="co">#&gt; 3 -0.2806725 0.3991111 0.4804843 -0.7896087  1.1219178  1.143905</span>
+<span class="co">#&gt;           X7           X8        X9         X10         X11        X12</span>
+<span class="co">#&gt; 1  3.3972509  1.125000000 0.6071429  2.42857143  3.30357143  1.5714286</span>
+<span class="co">#&gt; 2  0.2516731 -0.004492044 1.2137260 -0.04577355 -0.05819752  0.9870828</span>
+<span class="co">#&gt; 3 -0.7694621  1.386773353 0.1424947  0.78763242 -0.42062486 -0.8019290</span>
+<span class="co">#&gt;          X13       X14       X15        X16       X17        X18</span>
+<span class="co">#&gt; 1  1.4482183 1.6708234 -1.154425  0.5714286  2.660714  0.7321429</span>
+<span class="co">#&gt; 2 -0.6536322 0.0572453  1.454080  0.6563762  1.273229 -2.4721199</span>
+<span class="co">#&gt; 3  0.5156570 0.1736328  1.106835 -0.7598971 -1.038261 -0.6558406</span>
+<span class="co">#&gt;          X19</span>
+<span class="co">#&gt; 1  0.2142857</span>
+<span class="co">#&gt; 2  0.5635347</span>
+<span class="co">#&gt; 3 -0.3566306</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $coefficients</span>
+<span class="co">#&gt;      MESOR Amplitude  Acrophase</span>
+<span class="co">#&gt; 1 1.507859 0.4052887 -0.1809111</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $emp.mean</span>
+<span class="co">#&gt;      X03      X04      X05      X06      X07      X08      X09 </span>
+<span class="co">#&gt; 1.854167 1.222222 1.029412 1.991667 2.078947 1.645833 1.145833 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $fitted.values</span>
+<span class="co">#&gt; [1] 1.180306 1.117027 1.348052 1.699416 1.906534 1.813442 1.490240</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $residuals</span>
+<span class="co">#&gt;        X03        X04        X05        X06        X07        X08 </span>
+<span class="co">#&gt;  0.6738608  0.1051957 -0.3186407  0.2922505  0.1724135 -0.1676082 </span>
+<span class="co">#&gt;        X09 </span>
+<span class="co">#&gt; -0.3444063 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $conf.ints</span>
+<span class="co">#&gt;                 MESOR  Amplitude Acrophase</span>
+<span class="co">#&gt; Upper limit 2.0696275  0.9139306        NA</span>
+<span class="co">#&gt; Lower limit 0.9460913 -0.1033533        NA</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,&quot;class&quot;)</span>
+<span class="co">#&gt; [1] &quot;population.cosinor.lm&quot;</span></code></pre></div>
+<p>This function can also be used with data intended to be analyzed by single cosinor.</p>
+<p>Users should note that R performs listwise deletion while calculating regression models and therefore results may differ from other software packages that use pairwise deletion.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

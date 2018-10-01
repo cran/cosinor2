@@ -4,33 +4,33 @@
 \alias{periodogram}
 \title{Periodogram}
 \usage{
-periodogram(data, timecol, firstsubj, lastsubj, na.action)
+periodogram(data, time, periods = time, na.action = na.omit,
+  alpha = 0.05)
 }
 \arguments{
-\item{data}{data frame containing all the subjects and time data.}
+\item{data}{A data frame containing responses of subjects collected over time, with subjects in the rows and timepoints in the columns.}
 
-\item{timecol}{Column number of the column containing the time data in the data frame.}
+\item{time}{A vector containing the times at which the data was collected. If this vector includes midnight, it should be coded as 24 instead of 0.}
 
-\item{firstsubj}{Column number of the first subject in the data frame.}
+\item{periods}{A vector containing periods that are to be included in the periodogram. Defaults to the same periods as provided in the vector \code{time}.}
 
-\item{lastsubj}{Column number of the last subject in the data frame. Same as \code{firstsubj} if performing single cosinor analysis.}
+\item{na.action}{Action to be performed on missing values. Defaults to \code{na.omit}.}
 
-\item{na.action}{Action to be performed on missing values.}
+\item{alpha}{Significance level for determining if a rhythm with a given period is significant or not. Defaults to .05.}
 }
 \description{
 Estimates the best-fitting period using iterative cosinor procedure.
 }
 \details{
-Iterative cosinor procedure is performed as described in Klemfuss & Clopton (1993). Cosinor is performed iteratively with the period (\eqn{\tau}) increased by 1 in each iteration. Percent Rhythm is calculated in each iteration, which allows for an estimation of the best fitting period. A periodogram can be plotted, which shows Percent Rhythm (coefficient of determination) for each period.
+Iterative cosinor procedure is performed as described in Klemfuss & Clopton (1993). Cosinor is performed iteratively with the period (\eqn{\tau}) increased by 1 in each iteration. Percent Rhythm is calculated in each iteration, which allows for an estimation of the best fitting period. A periodogram can be plotted, which shows Percent Rhythm (coefficient of determination) for each period. On the plot, periods with significant rhythm are shown as a point and periods with insignificant rhythm are shown as a cross.
 }
 \note{
 The range of periods included in iterations starts from 3 (sinusoidality of the curve is not achieved for \eqn{\tau} < 3) and ends with the number of timepoints in the data.
 }
 \examples{
-periodogram(timecol = 1, firstsubj = 2, lastsubj = 20, data = PANAS_november, na.action =
-"na.exclude")
+periodogram(data = PANAS_november, time = PANAS_time)
 
-periodogram(timecol = 1, firstsubj = 2, lastsubj = 2, data = temperature_zg)
+periodogram(data = t(data.frame(temperature_zg$Temperature)), time = temperature_zg$Time)
 }
 \references{
 Klemfuss, H. & Clopton, P. L. (1993). Seeking Tau: A Comparison of Six Methods. \emph{Journal of Interdisciplinary Cycle Research}, \emph{24(1)}, 1-16.

@@ -7,9 +7,9 @@
 cosinor.poptests(pop1, pop2)
 }
 \arguments{
-\item{pop1}{An object created by \code{population.cosinor.lm} executed on the first population.}
+\item{pop1}{An object of the \code{population.cosinor.lm} class calculated on the first population.}
 
-\item{pop2}{An object created by \code{population.cosinor.lm} executed on the second population.}
+\item{pop2}{An object of the \code{population.cosinor.lm} class calculated on the second population.}
 }
 \description{
 Runs the tests that compare MESORs, amplitudes and acrophases of two different populations.
@@ -35,10 +35,10 @@ where \eqn{\widehat{\sigma}_{\beta_j}}, \eqn{\widehat{\sigma}_{\gamma_j}} and \e
 These tests should only be performed on independent samples. If the acrophases of two populations are significantly different, the results of the amplitude difference test are not reliable and should not be interpreted. While it's possible to perform tests which compare more than two populations, this function can only compare two populations.
 }
 \examples{
-fit.extraverts<-population.cosinor.lm(timecol = 1, firstsubj = 2, lastsubj = 25, data =
-PA_extraverts, period = 12)
-fit.introverts<-population.cosinor.lm(timecol = 1, firstsubj = 2, lastsubj = 30, data =
-PA_introverts, period = 12)
+fit.extraverts<-population.cosinor.lm(data = PA_extraverts, time = PA_time,
+period = 24)
+fit.introverts<-population.cosinor.lm(data = PA_introverts, time = PA_time,
+period = 24)
 cosinor.poptests(pop1 = fit.extraverts, pop2 = fit.introverts)
 }
 \references{

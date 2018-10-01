@@ -4,13 +4,11 @@
 \name{PANAS_november}
 \alias{PANAS_november}
 \title{Self-reported mood}
-\format{A data frame with 30 rows and 20 variables:
+\format{A data frame with 19 rows and 30 variables:
 \describe{
-  \item{Time}{Day of measurement.}
-  \item{Subject 1, Subject 2, Subject 3, Subject 4, Subject 5, Subject 6, Subject 7, Subject 8, Subject 9, Subject 10, Subject 11, Subject 12, Subject 13, Subject 14, Subject 15, Subject 16, Subject 17, Subject 18, Subject 19}{Results of 19 subjects on the PANAS questionnaire.}
-  }}
+  \item{X01, X02, X03, X04, X05, X06, X07, X08, X09, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20, X21, X22, X23, X24, X25, X26, X27, X28, X29, X30}{Responses of subjects at 30 measurement points (days).}}}
 \source{
-Mutak, A. (2016, May). \emph{Kako struktura tjedna utječe na naše raspoloženje?} [\emph{How Does the Structure of the Week Impact Our Mood?}]. Study presented at the 5th \emph{Psihozij} conference, Zagreb, Croatia.
+Mutak, A. i Vukasović Hlupić, T. (2017). Exogeneity of the Circaseptan Mood Rhythm and Its Relation to the Working Week. \emph{Review of Psychology}, \emph{24} (1-2), 15-28.
 }
 \usage{
 PANAS_november

@@ -4,10 +4,10 @@
 \name{temperature_zg}
 \alias{temperature_zg}
 \title{Daily air temperature in Zagreb}
-\format{A data frame with 48 rows and 2 variables:
-\describe{
-  \item{Time}{Time of measurement in hours.}
-  \item{Temperature}{Air temperature in degrees Celsius.}
+\format{A data frame with two variables:
+ \describe{
+  \item{Temperature}{Air temperature in Zagreb on July 1, 2015.}
+  \item{Time}{Time of the day when the temperature was measured.}
   }}
 \source{
 Croatian Meteorological and Hydrological Service, \url{http://www.meteo.hr}
