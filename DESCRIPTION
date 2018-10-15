@@ -1,7 +1,7 @@
 Package: cosinor2
 Title: Extended Tools for Cosinor Analysis of Rhythms
 Description: Statistical procedures for calculating population–mean cosinor, non–stationary cosinor, estimation of best–fitting period, tests of population rhythm differences and more. See Cornélissen, G. (2014). <doi:10.1186/1742-4682-11-16>.
-Version: 0.2.0
+Version: 0.2.1
 Author: Augustin Mutak <mutak94@gmail.com>
 Maintainer: Augustin Mutak <mutak94@gmail.com>
 Depends: R (>= 2.10), cosinor (>= 1.1)
@@ -19,5 +19,5 @@ Repository: CRAN
 Date: 2018-10-01
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
-Packaged: 2018-09-30 23:32:52 UTC; Augustin
-Date/Publication: 2018-10-01 06:10:03 UTC
+Packaged: 2018-10-15 15:36:37 UTC; Augustin
+Date/Publication: 2018-10-15 16:10:03 UTC
